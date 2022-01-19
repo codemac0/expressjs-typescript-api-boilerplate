@@ -9,9 +9,8 @@ interface IUserType {
 }
 
 const createUser = async (userBody: IUserType) => {
-    if (!!User.findOne({email: userBody.email})) {
-        throw new ApiError(httpStatus.BAD_REQUEST, 'Email already taken');
-    }
+    const isEmailExists = await User.findOne({email: userBody.email});
+    if (isEmailExists) throw new ApiError(httpStatus.BAD_REQUEST, 'Email already taken');
     return User.create(userBody);
 };
 
